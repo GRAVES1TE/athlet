@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Атлет — Домашние Тренировки</title>
+  
+  <!-- iOS meta tags for native look -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Атлет">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <meta name="theme-color" content="#090d16">
+  
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app" class="app-container">
+    
+    <!-- Top Bar: XP, Streak, Level -->
+    <header class="top-nav">
+      <div class="user-stats-bar">
+        <div class="stat-pill streak-pill" id="streakBadge" title="Серия тренировок">
+          <span class="icon">🔥</span>
+          <span class="value" id="streakCount">0</span>
+          <span class="label">дней</span>
+        </div>
+        
+        <div class="level-indicator" id="levelBadge">
+          <div class="level-title-row">
+            <span class="level-name" id="userRankTitle">Новичок</span>
+            <span class="level-num" id="userLevelNum">Ур. 1</span>
+          </div>
+          <div class="level-progress-bar">
+            <div class="level-progress-fill" id="levelProgressFill" style="width: 25%"></div>
+          </div>
+        </div>
+
+        <div class="stat-pill xp-pill" title="Очки опыта">
+          <span class="icon">⚡</span>
+          <span class="value" id="userXpCount">0</span>
+          <span class="label">XP</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- SCREEN: HOME / WORKOUTS -->
+      <section id="screenHome" class="screen-section active">
+        <!-- Daily Motivation Quote / Anti-procrastination -->
+        <div class="hero-banner">
+          <div class="hero-text">
+            <span class="hero-tag">АНТИ-ЛЕНЬ СИСТЕМА</span>
+            <h1 class="hero-title" id="greetingTitle">Доброе утро, Атлет!</h1>
+            <p class="hero-subtitle">Всего 7-10 минут сегодня — и ты уже опережаешь 90% людей на диване.</p>
+          </div>
+          <button class="quick-start-btn" id="heroQuickStartBtn">
+            <span>Начать быструю</span>
+            <span class="play-icon">▶</span>
+          </button>
+        </div>
+
+        <!-- Emergency Streak Saver Card -->
+        <div class="streak-saver-card" id="streakSaverCard">
+          <div class="saver-badge">🛡️ ЛЕНЬ И НЕТ СИЛ?</div>
+          <div class="saver-content">
+            <div class="saver-info">
+              <h3>Спасение Стрика (3 минуты)</h3>
+              <p>Сделай микро-сет прямо у кровати, чтобы не сгорел твой огонь 🔥</p>
+            </div>
+            <button class="saver-btn" id="btnStartStreakSaver">Спасти стрик</button>
+          </div>
+        </div>
+
+        <!-- Workout Programs Section -->
+        <div class="section-heading">
+          <h2>Программы без инвентаря</h2>
+          <span class="section-sub">Выбирай под настроение</span>
+        </div>
+
+        <div class="workout-grid" id="workoutsListContainer">
+          <!-- Workouts will be injected by JavaScript -->
+        </div>
+      </section>
+
+      <!-- SCREEN: PROGRESS & STATS -->
+      <section id="screenProgress" class="screen-section">
+        <div class="section-heading">
+          <h2>Твой Прогресс</h2>
+          <span class="section-sub">Каждый день приближает форму</span>
+        </div>
+
+        <!-- Summary Stats Cards -->
+        <div class="stats-overview-grid">
+          <div class="overview-card">
+            <span class="overview-num" id="totalWorkoutsCount">0</span>
+            <span class="overview-label">Тренировок всего</span>
+          </div>
+          <div class="overview-card">
+            <span class="overview-num" id="totalMinutesCount">0</span>
+            <span class="overview-label">Минут в движении</span>
+          </div>
+          <div class="overview-card">
+            <span class="overview-num" id="totalPushupsCount">0</span>
+            <span class="overview-label">Отжиманий сделано</span>
+          </div>
+        </div>
+
+        <!-- Activity Heatmap / Calendar -->
+        <div class="card calendar-card">
+          <div class="card-header">
+            <h3>Календарь активности</h3>
+            <span class="calendar-month" id="calendarMonthYear">Май 2026</span>
+          </div>
+          <div class="calendar-weekdays">
+            <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+          </div>
+          <div class="calendar-grid" id="calendarDaysGrid">
+            <!-- Calendar days generated via JS -->
+          </div>
+          <div class="calendar-legend">
+            <span class="legend-item"><span class="dot done"></span> Сделано</span>
+            <span class="legend-item"><span class="dot today"></span> Сегодня</span>
+          </div>
+        </div>
+
+        <!-- RPG Rank Card -->
+        <div class="card rank-card">
+          <div class="card-header">
+            <h3>Ранг персонажа</h3>
+            <span class="rank-badge" id="cardRankBadge">Атлет</span>
+          </div>
+          <div class="rank-list" id="rankMilestonesList">
+            <!-- Milestones dynamically rendered -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN: EXERCISES GUIDE -->
+      <section id="screenLibrary" class="screen-section">
+        <div class="section-heading">
+          <h2>Библиотека Движений</h2>
+          <span class="section-sub">Идеальная техника без травм</span>
+        </div>
+
+        <!-- Filter tabs: Все, Руки/Грудь, Пресс, Кардио -->
+        <div class="filter-pills" id="exerciseFilterPills">
+          <button class="pill active" data-filter="all">Все</button>
+          <button class="pill" data-filter="arms">Руки и грудь</button>
+          <button class="pill" data-filter="abs">Пресс и кор</button>
+          <button class="pill" data-filter="morning">Утро/Разминка</button>
+        </div>
+
+        <div class="exercise-cards-list" id="exerciseCardsContainer">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- SCREEN: SETTINGS / PROFILE -->
+      <section id="screenSettings" class="screen-section">
+        <div class="section-heading">
+          <h2>Настройки и советы</h2>
+          <span class="section-sub">Удобство под тебя</span>
+        </div>
+
+        <div class="card settings-card">
+          <div class="settings-row">
+            <div class="setting-info">
+              <span class="setting-title">Звуковой таймер (Бипы)</span>
+              <span class="setting-desc">Сигнал за 3 секунды до конца подхода</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleSound" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-row">
+            <div class="setting-info">
+              <span class="setting-title">Вибрация (Haptic)</span>
+              <span class="setting-desc">Тактильный отклик при смене упражнений</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleVibration" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="settings-row">
+            <div class="setting-info">
+              <span class="setting-title">Время отдыха между подходами</span>
+              <span class="setting-desc">15, 20 или 30 секунд</span>
+            </div>
+            <select id="selectRestTime" class="ios-select">
+              <option value="15">15 сек (Интенсивно)</option>
+              <option value="20" selected>20 сек (Оптимально)</option>
+              <option value="30">30 сек (Спокойно)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card tips-card">
+          <h3>💡 Главные правила красивого пресса и рук:</h3>
+          <ul class="tips-list">
+            <li><strong>Пресс делается на кухне:</strong> Упражнения делают мышцы плотными и рельефными, но чтобы кубики проявились, пей 1.5-2л воды и меньше сахара.</li>
+            <li><strong>Руки без инвентаря:</strong> Алмазные отжимания нагружают трицепс (он дает 60% объема руки!), а широкие отжимания строят мощную грудь.</li>
+            <li><strong>Главное — постоянство:</strong> 8 минут каждое утро дадут в 10 раз лучший результат, чем одна тяжелая тренировка раз в 2 недели.</li>
+          </ul>
+        </div>
+
+        <div class="card ios-install-card">
+          <div class="install-badge">📱 КАК УСТАНОВИТЬ НА IPHONE БЕСПЛАТНО</div>
+          <ol class="install-steps">
+            <li>Открой эту страницу в <strong>Safari</strong> на своем iPhone.</li>
+            <li>Нажми иконку <strong>«Поделиться»</strong> (квадрат со стрелкой вверх внизу экрана).</li>
+            <li>Прокрути вниз и выбери <strong>«На экран "Домой"»</strong> (Add to Home Screen).</li>
+            <li>Нажми <strong>«Добавить»</strong> в правом верхнем углу.</li>
+            <li>Готово! Приложение появится на рабочем столе как нативная игра без рамок браузера.</li>
+          </ol>
+        </div>
+
+        <button class="reset-data-btn" id="btnResetData">Сбросить данные прогресса</button>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-screen="screenHome">
+        <span class="nav-icon">⚡</span>
+        <span class="nav-label">Тренировка</span>
+      </button>
+      <button class="nav-item" data-screen="screenProgress">
+        <span class="nav-icon">📈</span>
+        <span class="nav-label">Прогресс</span>
+      </button>
+      <button class="nav-item" data-screen="screenLibrary">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Упражнения</span>
+      </button>
+      <button class="nav-item" data-screen="screenSettings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Еще</span>
+      </button>
+    </nav>
+
+    <!-- ACTIVE WORKOUT MODAL (FULLSCREEN) -->
+    <div id="workoutPlayerModal" class="workout-modal">
+      <div class="modal-header">
+        <button class="modal-close-btn" id="btnExitWorkout">✕</button>
+        <div class="modal-workout-meta">
+          <span class="workout-meta-title" id="playerWorkoutTitle">Стальной Пресс</span>
+          <span class="workout-meta-step" id="playerStepIndicator">1 из 8</span>
+        </div>
+        <button class="sound-mute-btn" id="playerMuteToggle">🔊</button>
+      </div>
+
+      <!-- Exercise Active Screen -->
+      <div class="player-body">
+        
+        <!-- Rest Overlay Screen (Appears during rest) -->
+        <div id="restOverlay" class="rest-overlay hidden">
+          <div class="rest-title">ОТДЫХ</div>
+          <div class="rest-timer-display" id="restTimerDisplay">20</div>
+          <div class="next-exercise-preview">
+            <span class="next-label">Следующее упражнение:</span>
+            <span class="next-name" id="nextExerciseName">Алмазные отжимания</span>
+          </div>
+          <button class="btn-skip-rest" id="btnSkipRest">Пропустить отдых ➔</button>
+        </div>
+
+        <!-- Normal Exercise View -->
+        <div class="exercise-view" id="activeExerciseView">
+          <div class="exercise-visual-box">
+            <div class="exercise-animated-avatar" id="playerVisualAvatar">💪</div>
+            <div class="target-muscles-tag" id="playerMusclesTag">Трицепс • Грудь</div>
+          </div>
+
+          <h2 class="exercise-title" id="playerExerciseName">Классические отжимания</h2>
+          <p class="exercise-tip" id="playerExerciseTip">Держи спину прямой, не прогибайся в пояснице, локти под 45 градусов.</p>
+
+          <!-- Circular / Numeric Timer -->
+          <div class="timer-container">
+            <div class="timer-circle">
+              <svg class="progress-ring" width="180" height="180">
+                <circle class="progress-ring-bg" stroke="#1f293d" stroke-width="10" fill="transparent" r="80" cx="90" cy="90"/>
+                <circle id="timerProgressRing" class="progress-ring-circle" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" fill="transparent" r="80" cx="90" cy="90"/>
+              </svg>
+              <div class="timer-value-box">
+                <span class="timer-number" id="playerMainTimer">30</span>
+                <span class="timer-unit" id="playerTimerUnit">сек</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player Controls -->
+      <div class="player-controls">
+        <button class="btn-control btn-prev" id="btnPrevExercise">⏮</button>
+        <button class="btn-control btn-pause-play" id="btnPausePlayExercise">⏸</button>
+        <button class="btn-control btn-next" id="btnNextExercise">⏭</button>
+      </div>
+    </div>
+
+    <!-- WORKOUT COMPLETED CELEBRATION MODAL -->
+    <div id="finishModal" class="finish-modal">
+      <div class="finish-dialog">
+        <div class="confetti-cannon">🎉</div>
+        <h2>ТЫ КРАСАВЧИК!</h2>
+        <p class="finish-sub">Тренировка завершена, тело в тонусе!</p>
+
+        <div class="rewards-box">
+          <div class="reward-pill">
+            <span class="reward-icon">⚡</span>
+            <span class="reward-val" id="rewardXp">+120 XP</span>
+          </div>
+          <div class="reward-pill">
+            <span class="reward-icon">🔥</span>
+            <span class="reward-val" id="rewardStreak">+1 День серии</span>
+          </div>
+        </div>
+
+        <div class="finish-summary-stats">
+          <div class="f-stat">
+            <span class="f-val" id="finishDuration">8:00</span>
+            <span class="f-lbl">Время</span>
+          </div>
+          <div class="f-stat">
+            <span class="f-val" id="finishCalories">~65 ккал</span>
+            <span class="f-lbl">Калории</span>
+          </div>
+          <div class="f-stat">
+            <span class="f-val" id="finishExercisesCount">7</span>
+            <span class="f-lbl">Упражнений</span>
+          </div>
+        </div>
+
+        <button class="btn-finish-confirm" id="btnFinishConfirm">Забрать награду 🚀</button>
+      </div>
+    </div>
+
+    <!-- EXERCISE DETAIL INFO MODAL -->
+    <div id="exerciseInfoModal" class="exercise-info-modal">
+      <div class="info-dialog">
+        <div class="info-header">
+          <h3 id="infoModalTitle">Название</h3>
+          <button class="info-close-btn" id="btnInfoModalClose">✕</button>
+        </div>
+        <div class="info-body">
+          <div class="info-icon" id="infoModalIcon">🤸</div>
+          <div class="info-muscle-badge" id="infoModalMuscles">Целевые мышцы</div>
+          <h4>Как выполнять правильно:</h4>
+          <p id="infoModalInstructions">Инструкция...</p>
+          <div class="pro-tip-box">
+            <strong>Секрет эффективности:</strong>
+            <span id="infoModalProTip">Совет...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
