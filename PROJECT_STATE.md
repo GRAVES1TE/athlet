@@ -7,6 +7,7 @@
 ## 📌 О проекте
 - **Название:** Атлет (Athlet) — персональный трекер и таймер домашних тренировок без инвентаря (PWA).
 - **Стек:** Ванильный HTML5, CSS3, JavaScript (ES6+), Web Audio API, Service Worker / PWA manifest.
+- **Репозиторий GitHub:** https://github.com/GRAVES1TE/athlet
 - **Целевые устройства:** Мобильные (iPhone / Android) и десктоп с аккуратной адаптивной версткой.
 
 ---
