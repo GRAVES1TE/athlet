@@ -482,6 +482,7 @@ class WorkoutPlayer {
     if (this.progressRing) {
       this.progressRing.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
       this.progressRing.style.strokeDashoffset = '0';
+      this.progressRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
     }
 
     this.bindEvents();
@@ -534,7 +535,7 @@ class WorkoutPlayer {
     this.secondsLeft = step.duration;
     this.currentExerciseTotalSeconds = step.duration;
     this.updateTimerDisplay();
-    this.updateProgressRing(1);
+    this.updateProgressRing(1, true);
 
     this.pausePlayBtn.textContent = '⏸';
     this.isPaused = false;
@@ -580,10 +581,19 @@ class WorkoutPlayer {
     this.timerNumEl.textContent = this.secondsLeft;
   }
 
-  updateProgressRing(fraction) {
+  updateProgressRing(fraction, immediate = false) {
     if (!this.progressRing) return;
     const offset = this.circumference - (fraction * this.circumference);
-    this.progressRing.style.strokeDashoffset = offset;
+    if (immediate) {
+      this.progressRing.style.transition = 'none';
+      this.progressRing.style.strokeDashoffset = offset;
+      // Force repaint to flush instantaneous offset
+      void this.progressRing.getBoundingClientRect();
+      this.progressRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
+    } else {
+      this.progressRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
+      this.progressRing.style.strokeDashoffset = offset;
+    }
   }
 
   handleStepCompleted() {
@@ -617,6 +627,21 @@ class WorkoutPlayer {
   togglePausePlay() {
     this.isPaused = !this.isPaused;
     this.pausePlayBtn.textContent = this.isPaused ? '▶' : '⏸';
+    if (this.isPaused) {
+      if (this.progressRing) {
+        const computedStyle = window.getComputedStyle(this.progressRing);
+        const currentOffset = computedStyle.strokeDashoffset;
+        this.progressRing.style.transition = 'none';
+        this.progressRing.style.strokeDashoffset = currentOffset;
+      }
+    } else {
+      if (this.progressRing) {
+        this.progressRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
+        const fraction = this.secondsLeft / this.currentExerciseTotalSeconds;
+        const offset = this.circumference - (fraction * this.circumference);
+        this.progressRing.style.strokeDashoffset = offset;
+      }
+    }
   }
 
   prevStep() {

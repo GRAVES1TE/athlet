@@ -64,6 +64,10 @@
   -webkit-touch-callout: none;
 }
 
+button, a, input, select, .nav-item, .workout-card, .exercise-guide-item, .pill, .stat-pill, .quick-start-btn, .saver-btn, .toggle-switch, .ios-select {
+  touch-action: manipulation;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -85,11 +89,22 @@ body {
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU-accelerated fixed background canvas for iOS Safari (eliminates scroll repaints) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: 
     radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
     radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
     linear-gradient(180deg, #090a0d 0%, #0d0f16 100%);
-  background-attachment: fixed;
+  pointer-events: none;
+  z-index: -1;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Utility Hidden */
@@ -122,8 +137,8 @@ body {
   position: sticky;
   top: 0;
   z-index: 40;
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   background: rgba(9, 10, 13, 0.88);
   border-bottom: 1px solid var(--border-color);
   padding-top: calc(10px + var(--safe-top));
@@ -131,6 +146,9 @@ body {
   padding-left: 14px;
   padding-right: 14px;
   width: 100%;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .user-stats-bar {
@@ -183,7 +201,7 @@ body {
 }
 
 .streak-pill .icon {
-  filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.5));
+  text-shadow: 0 0 6px rgba(249, 115, 22, 0.6);
 }
 
 .xp-pill {
@@ -193,7 +211,7 @@ body {
 }
 
 .xp-pill .icon {
-  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
+  text-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
 }
 
 .level-indicator {
@@ -258,22 +276,25 @@ body {
 
 .screen-section {
   display: none;
-  animation: screenFadeIn 0.25s var(--ease-spring);
   width: 100%;
 }
 
 .screen-section.active {
   display: block;
+  animation: screenFadeIn 0.22s var(--ease-spring);
+  will-change: opacity, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes screenFadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translate3d(0, 8px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -281,7 +302,7 @@ body {
    HERO BANNER
    ========================================================================== */
 .hero-banner {
-  background: linear-gradient(145deg, rgba(23, 27, 38, 0.88) 0%, rgba(13, 16, 23, 0.95) 100%);
+  background: linear-gradient(145deg, rgba(23, 27, 38, 0.95) 0%, rgba(13, 16, 23, 0.98) 100%);
   border: 1px solid var(--border-highlight);
   border-radius: 20px;
   padding: 20px 18px;
@@ -289,8 +310,6 @@ body {
   box-shadow: var(--shadow-md), var(--glass-specular);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   width: 100%;
 }
 
@@ -352,16 +371,23 @@ body {
   border-radius: 14px;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.18), var(--shadow-sm);
-  transition: transform 0.2s var(--ease-spring), background 0.2s, box-shadow 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.quick-start-btn:hover {
-  background: #f1f5f9;
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+@media (hover: hover) and (pointer: fine) {
+  .quick-start-btn:hover {
+    background: #f1f5f9;
+  }
+  .quick-start-btn:hover .play-icon {
+    transform: translate3d(2px, 0, 0);
+  }
 }
 
 .quick-start-btn:active {
-  transform: scale(0.975);
+  transform: scale3d(0.97, 0.97, 1);
   background: #e2e8f0;
 }
 
@@ -370,21 +396,15 @@ body {
   transition: transform 0.2s var(--ease-spring);
 }
 
-.quick-start-btn:hover .play-icon {
-  transform: translateX(2px);
-}
-
 /* ==========================================================================
    STREAK SAVER CARD
    ========================================================================== */
 .streak-saver-card {
-  background: linear-gradient(145deg, rgba(29, 21, 17, 0.72) 0%, rgba(18, 14, 15, 0.88) 100%);
+  background: linear-gradient(145deg, rgba(29, 21, 17, 0.92) 0%, rgba(18, 14, 15, 0.96) 100%);
   border: 1px solid rgba(249, 115, 22, 0.25);
   border-radius: 16px;
   padding: 14px 16px;
   margin-bottom: 18px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
   width: 100%;
 }
@@ -439,16 +459,21 @@ body {
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: transform 0.2s var(--ease-spring), background 0.2s, border-color 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease, border-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.saver-btn:hover {
-  background: rgba(249, 115, 22, 0.25);
-  border-color: rgba(249, 115, 22, 0.6);
+@media (hover: hover) and (pointer: fine) {
+  .saver-btn:hover {
+    background: rgba(249, 115, 22, 0.25);
+    border-color: rgba(249, 115, 22, 0.6);
+  }
 }
 
 .saver-btn:active {
-  transform: scale(0.95);
+  transform: scale3d(0.95, 0.95, 1);
 }
 
 /* ==========================================================================
@@ -478,7 +503,7 @@ body {
 }
 
 .workout-card {
-  background: var(--bg-card);
+  background: var(--bg-card-solid);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm), var(--glass-specular);
   border-radius: 16px;
@@ -487,21 +512,32 @@ body {
   align-items: center;
   gap: 14px;
   cursor: pointer;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   width: 100%;
-  transition: transform 0.22s var(--ease-spring), border-color 0.22s var(--ease-smooth), background 0.22s var(--ease-smooth), box-shadow 0.22s var(--ease-smooth);
+  transition: transform 0.18s var(--ease-spring), border-color 0.18s ease, background-color 0.18s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.workout-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-highlight);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+@media (hover: hover) and (pointer: fine) {
+  .workout-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-highlight);
+    transform: translate3d(0, -2px, 0);
+    box-shadow: var(--shadow-md);
+  }
+  .workout-card:hover .workout-icon-box {
+    transform: scale3d(1.06, 1.06, 1);
+  }
+  .workout-card:hover .workout-arrow {
+    color: #ffffff;
+    transform: translate3d(3px, 0, 0);
+  }
 }
 
 .workout-card:active {
-  transform: scale(0.985);
+  transform: scale3d(0.98, 0.98, 1);
+  background: var(--bg-card-hover);
 }
 
 /* Workout Category Icons */
@@ -615,11 +651,6 @@ body {
   transition: transform 0.2s var(--ease-spring), color 0.2s;
 }
 
-.workout-card:hover .workout-arrow {
-  color: #ffffff;
-  transform: translateX(3px);
-}
-
 /* ==========================================================================
    PROGRESS & STATS SCREEN
    ========================================================================== */
@@ -632,7 +663,7 @@ body {
 }
 
 .overview-card {
-  background: var(--bg-card);
+  background: var(--bg-card-solid);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm), var(--glass-specular);
   border-radius: 14px;
@@ -640,8 +671,6 @@ body {
   text-align: center;
   min-width: 0;
   overflow: hidden;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 .overview-num {
@@ -668,14 +697,12 @@ body {
 
 /* Common Card Shell */
 .card {
-  background: var(--bg-card);
+  background: var(--bg-card-solid);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm), var(--glass-specular);
   border-radius: 18px;
   padding: 16px;
   margin-bottom: 14px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   width: 100%;
 }
 
@@ -735,7 +762,7 @@ body {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  transition: all 0.2s var(--ease-smooth);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .cal-day.empty {
@@ -821,7 +848,7 @@ body {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
-  transition: all 0.2s var(--ease-smooth);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .rank-item.unlocked {
@@ -877,12 +904,21 @@ body {
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all 0.2s var(--ease-smooth);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s var(--ease-spring);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.pill:hover {
-  border-color: var(--border-highlight);
-  color: #ffffff;
+@media (hover: hover) and (pointer: fine) {
+  .pill:hover {
+    border-color: var(--border-highlight);
+    color: #ffffff;
+  }
+}
+
+.pill:active {
+  transform: scale3d(0.95, 0.95, 1);
 }
 
 .pill.active {
@@ -901,7 +937,7 @@ body {
 }
 
 .exercise-guide-item {
-  background: var(--bg-card);
+  background: var(--bg-card-solid);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm), var(--glass-specular);
   border-radius: 14px;
@@ -910,20 +946,24 @@ body {
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   width: 100%;
-  transition: transform 0.2s var(--ease-spring), border-color 0.2s, background 0.2s;
+  transition: transform 0.15s var(--ease-spring), border-color 0.15s ease, background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.exercise-guide-item:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-highlight);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .exercise-guide-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-highlight);
+    transform: translate3d(0, -1px, 0);
+  }
 }
 
 .exercise-guide-item:active {
-  transform: scale(0.985);
+  transform: scale3d(0.98, 0.98, 1);
+  background: var(--bg-card-hover);
 }
 
 .guide-icon {
@@ -1031,7 +1071,7 @@ body {
   inset: 0;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  transition: background-color 0.3s var(--ease-smooth), border-color 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth);
+  transition: background-color 0.2s var(--ease-smooth), border-color 0.2s var(--ease-smooth);
   border-radius: 34px;
 }
 
@@ -1045,7 +1085,10 @@ body {
   background-color: #ffffff;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  transition: transform 0.3s var(--ease-spring), background-color 0.3s;
+  transition: transform 0.22s var(--ease-spring), background-color 0.2s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 input:checked + .slider {
@@ -1055,7 +1098,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+  transform: translate3d(20px, 0, 0);
 }
 
 .ios-select {
@@ -1070,7 +1113,7 @@ input:checked + .slider:before {
   cursor: pointer;
   flex-shrink: 0;
   max-width: 170px;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
 .ios-select:hover {
@@ -1133,16 +1176,21 @@ input:checked + .slider:before {
   font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
-  transition: all 0.2s var(--ease-smooth);
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s var(--ease-spring);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.reset-data-btn:hover {
-  background: rgba(244, 63, 94, 0.12);
-  border-color: rgba(244, 63, 94, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .reset-data-btn:hover {
+    background: rgba(244, 63, 94, 0.12);
+    border-color: rgba(244, 63, 94, 0.45);
+  }
 }
 
 .reset-data-btn:active {
-  transform: scale(0.98);
+  transform: scale3d(0.98, 0.98, 1);
 }
 
 /* ==========================================================================
@@ -1152,12 +1200,12 @@ input:checked + .slider:before {
   position: fixed;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
   width: 100%;
   max-width: 440px;
-  background: rgba(9, 10, 13, 0.9);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  background: rgba(9, 10, 13, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid var(--border-color);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.45), var(--glass-specular);
   display: flex;
@@ -1168,6 +1216,8 @@ input:checked + .slider:before {
   padding-left: 10px;
   padding-right: 10px;
   z-index: 50;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .nav-item {
@@ -1184,16 +1234,21 @@ input:checked + .slider:before {
   min-height: 46px;
   min-width: 52px;
   border-radius: 12px;
-  transition: color 0.2s var(--ease-smooth), transform 0.2s var(--ease-spring);
+  transition: color 0.15s ease, transform 0.15s var(--ease-spring);
   position: relative;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.nav-item:hover {
-  color: var(--text-secondary);
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover {
+    color: var(--text-secondary);
+  }
 }
 
 .nav-item:active {
-  transform: scale(0.92);
+  transform: scale3d(0.92, 0.92, 1);
 }
 
 .nav-item.active {
@@ -1268,16 +1323,19 @@ input:checked + .slider:before {
   overflow: hidden !important;
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
-  animation: modalSlideUp 0.3s var(--ease-spring);
+  animation: modalSlideUp 0.28s var(--ease-spring);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes modalSlideUp {
   from {
-    transform: translateY(100%);
-    opacity: 0.7;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0.85;
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
@@ -1289,9 +1347,7 @@ input:checked + .slider:before {
   justify-content: space-between;
   padding: calc(var(--safe-top) + 10px) 16px 12px;
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(9, 10, 13, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(9, 10, 13, 0.95);
   flex-shrink: 0;
   width: 100%;
 }
@@ -1308,11 +1364,14 @@ input:checked + .slider:before {
   justify-content: center;
   font-size: 16px;
   cursor: pointer;
-  transition: transform 0.2s var(--ease-spring), background 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .modal-close-btn:active, .sound-mute-btn:active {
-  transform: scale(0.9);
+  transform: scale3d(0.92, 0.92, 1);
   background: rgba(255, 255, 255, 0.12);
 }
 
@@ -1374,12 +1433,15 @@ input:checked + .slider:before {
   line-height: 1;
   animation: floatSubtle 3s ease-in-out infinite alternate;
   display: inline-block;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes floatSubtle {
-  from { transform: translateY(0) scale(1); }
-  to { transform: translateY(-5px) scale(1.03); }
+  from { transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
+  to { transform: translate3d(0, -6px, 0) scale3d(1.03, 1.03, 1); }
 }
 
 .target-muscles-tag {
@@ -1425,6 +1487,17 @@ input:checked + .slider:before {
   margin: 0 auto;
 }
 
+.timer-container::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0);
+}
+
 .timer-circle {
   position: relative;
   width: 176px;
@@ -1438,8 +1511,8 @@ input:checked + .slider:before {
   position: absolute;
   top: 0;
   left: 0;
-  transform: rotate(-90deg);
-  filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.35));
+  transform: rotate(-90deg) translateZ(0);
+  will-change: transform;
 }
 
 .progress-ring-bg {
@@ -1447,7 +1520,8 @@ input:checked + .slider:before {
 }
 
 .progress-ring-circle {
-  transition: stroke-dashoffset 0.35s linear, stroke 0.3s;
+  transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+  will-change: stroke-dashoffset;
 }
 
 .timer-value-box {
@@ -1480,9 +1554,7 @@ input:checked + .slider:before {
 .rest-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(9, 10, 13, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(9, 10, 13, 0.97);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1491,6 +1563,9 @@ input:checked + .slider:before {
   z-index: 10;
   text-align: center;
   animation: fadeIn 0.2s var(--ease-smooth);
+  will-change: opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .rest-overlay.hidden {
@@ -1547,15 +1622,20 @@ input:checked + .slider:before {
   font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s var(--ease-spring);
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.btn-skip-rest:hover {
-  background: rgba(255, 255, 255, 0.16);
+@media (hover: hover) and (pointer: fine) {
+  .btn-skip-rest:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
 }
 
 .btn-skip-rest:active {
-  transform: scale(0.95);
+  transform: scale3d(0.95, 0.95, 1);
 }
 
 /* Workout Controls Dock */
@@ -1566,9 +1646,7 @@ input:checked + .slider:before {
   justify-content: center;
   gap: 22px;
   border-top: 1px solid var(--border-subtle);
-  background: rgba(9, 10, 13, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(9, 10, 13, 0.95);
   flex-shrink: 0;
   width: 100%;
 }
@@ -1585,15 +1663,20 @@ input:checked + .slider:before {
   justify-content: center;
   font-size: 18px;
   cursor: pointer;
-  transition: transform 0.2s var(--ease-spring), background 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.btn-control:hover {
-  background: rgba(255, 255, 255, 0.12);
+@media (hover: hover) and (pointer: fine) {
+  .btn-control:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 }
 
 .btn-control:active {
-  transform: scale(0.92);
+  transform: scale3d(0.92, 0.92, 1);
   background: rgba(255, 255, 255, 0.16);
 }
 
@@ -1614,16 +1697,20 @@ input:checked + .slider:before {
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(255, 255, 255, 0.26);
-  transition: transform 0.2s var(--ease-spring), background 0.2s, box-shadow 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.btn-pause-play:hover {
-  background: #f1f5f9;
-  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.36);
+@media (hover: hover) and (pointer: fine) {
+  .btn-pause-play:hover {
+    background: #f1f5f9;
+  }
 }
 
 .btn-pause-play:active {
-  transform: scale(0.94);
+  transform: scale3d(0.94, 0.94, 1);
   background: #e2e8f0;
 }
 
@@ -1650,7 +1737,11 @@ input:checked + .slider:before {
   justify-content: center !important;
   padding: 20px !important;
   opacity: 1 !important;
-  animation: fadeIn 0.25s var(--ease-smooth);
+  animation: fadeIn 0.22s var(--ease-smooth);
+  will-change: opacity;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .finish-dialog,
@@ -1663,12 +1754,15 @@ input:checked + .slider:before {
   width: 100%;
   max-width: 370px;
   text-align: center;
-  animation: popIn 0.3s var(--ease-spring);
+  animation: popIn 0.25s var(--ease-spring);
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes popIn {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from { transform: scale3d(0.92, 0.92, 1); opacity: 0; }
+  to { transform: scale3d(1, 1, 1); opacity: 1; }
 }
 
 .confetti-cannon,
@@ -1677,11 +1771,14 @@ input:checked + .slider:before {
   line-height: 1;
   margin-bottom: 10px;
   animation: pulseScale 1.8s ease-in-out infinite alternate;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 @keyframes pulseScale {
-  from { transform: scale(1); }
-  to { transform: scale(1.08); }
+  from { transform: scale3d(1, 1, 1); }
+  to { transform: scale3d(1.08, 1.08, 1); }
 }
 
 .finish-dialog h2,
@@ -1771,15 +1868,20 @@ input:checked + .slider:before {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 18px rgba(255, 255, 255, 0.22);
-  transition: transform 0.2s var(--ease-spring), background 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.btn-finish-confirm:hover {
-  background: #f1f5f9;
+@media (hover: hover) and (pointer: fine) {
+  .btn-finish-confirm:hover {
+    background: #f1f5f9;
+  }
 }
 
 .btn-finish-confirm:active {
-  transform: scale(0.97);
+  transform: scale3d(0.97, 0.97, 1);
 }
 
 /* ==========================================================================
@@ -1804,7 +1906,11 @@ input:checked + .slider:before {
   align-items: flex-end !important;
   justify-content: center !important;
   opacity: 1 !important;
-  animation: fadeIn 0.25s var(--ease-smooth);
+  animation: fadeIn 0.22s var(--ease-smooth);
+  will-change: opacity;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .info-dialog {
@@ -1815,14 +1921,18 @@ input:checked + .slider:before {
   padding: 20px 20px calc(20px + var(--safe-bottom));
   border-top: 1px solid var(--border-highlight);
   box-shadow: var(--shadow-lg), var(--glass-specular);
-  animation: slideUpSheet 0.28s var(--ease-spring);
+  animation: slideUpSheet 0.25s var(--ease-spring);
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   max-height: 85vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideUpSheet {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from { transform: translate3d(0, 100%, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 .info-header {
@@ -1851,11 +1961,14 @@ input:checked + .slider:before {
   justify-content: center;
   font-size: 14px;
   cursor: pointer;
-  transition: transform 0.2s var(--ease-spring), background 0.2s;
+  transition: transform 0.15s var(--ease-spring), background-color 0.15s ease;
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .info-close-btn:active {
-  transform: scale(0.9);
+  transform: scale3d(0.9, 0.9, 1);
 }
 
 .info-icon {
