@@ -73,6 +73,8 @@ const ICONS = {
   chevronRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`,
   info: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
   sun: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
+  moon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
+  bolt: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
   core: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>`,
   arms: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1a2 2 0 0 0-2.83 0l-.88.88a2 2 0 0 1-2.83 0l-4.24-4.24a2 2 0 0 1 0-2.83l.88-.88a2 2 0 0 0 0-2.83L10 9"/><path d="m3 3 1 1a2 2 0 0 0 2.83 0l.88-.88a2 2 0 0 1 2.83 0l4.24 4.24a2 2 0 0 1 0 2.83l-.88.88a2 2 0 0 0 0 2.83L14 15"/></svg>`,
   fullbody: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
@@ -252,17 +254,20 @@ const EXERCISES = {
 };
 
 // ==========================================
-// WORKOUT PROGRAMS
+// WORKOUT PROGRAMS (ADAPTIVE TIME-OF-DAY SETS)
 // ==========================================
 const WORKOUTS = [
+  // УТРЕННИЕ ПРОГРАММЫ (5:00 - 11:59)
   {
     id: 'morning_kick',
-    title: 'Утренний комплекс',
-    desc: 'Активация суставов, разгон лимфотока и подготовка нервной системы к рабочему дню.',
+    title: 'Утренний запуск',
+    desc: 'Суставная разминка, мягкий разгон лимфотока и включение кора без перегрузки сердца.',
     timeMin: 6,
+    timeSlot: 'morning',
     iconType: 'sun',
     badgeClass: 'morning',
-    tags: ['Мобильность', 'Тонус', 'Без пота'],
+    intensity: 'Мягкий',
+    tags: ['Утро', 'Мобильность', 'Тонус'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
       { id: 'morning_stretch', duration: 40 },
@@ -272,13 +277,90 @@ const WORKOUTS = [
     ]
   },
   {
+    id: 'morning_energy',
+    title: 'Утренний энерджи-сет',
+    desc: 'Быстрый метаболический комплекс: активирует дыхательную систему и готовит к активному дню.',
+    timeMin: 8,
+    timeSlot: 'morning',
+    iconType: 'sun',
+    badgeClass: 'morning',
+    intensity: 'Средний',
+    tags: ['Утро', 'Метаболизм', 'Бодрость'],
+    exercises: [
+      { id: 'jumping_jacks', duration: 35 },
+      { id: 'mountain_climbers', duration: 30 },
+      { id: 'crunches', duration: 35 },
+      { id: 'pushups', duration: 30 },
+      { id: 'plank', duration: 40 }
+    ]
+  },
+
+  // ДНЕВНЫЕ ПРОГРАММЫ (12:00 - 17:59)
+  {
+    id: 'midday_posture',
+    title: 'Офисный ресет и осанка',
+    desc: 'Быстрая разгрузка спины и шеи после сидения за компьютером. Раскрытие грудной клетки.',
+    timeMin: 5,
+    timeSlot: 'day',
+    iconType: 'sun',
+    badgeClass: 'day',
+    intensity: 'Мягкий',
+    tags: ['День', 'Осанка', 'Спина'],
+    exercises: [
+      { id: 'morning_stretch', duration: 45 },
+      { id: 'pike_pushups', duration: 30 },
+      { id: 'dips_floor', duration: 30 },
+      { id: 'plank', duration: 40 }
+    ]
+  },
+  {
+    id: 'midday_hiit',
+    title: 'Дневной тонус 7 минут',
+    desc: 'Пробивка дневной сонливости и разгон кровообращения в середине рабочего дня.',
+    timeMin: 7,
+    timeSlot: 'day',
+    iconType: 'bolt',
+    badgeClass: 'day',
+    intensity: 'Средний',
+    tags: ['День', 'Фокус', 'Кардио-тонус'],
+    exercises: [
+      { id: 'jumping_jacks', duration: 30 },
+      { id: 'pushups', duration: 30 },
+      { id: 'mountain_climbers', duration: 30 },
+      { id: 'bicycle_crunches', duration: 35 },
+      { id: 'plank', duration: 35 }
+    ]
+  },
+
+  // ВЕЧЕРНИЕ ПРОГРАММЫ (18:00 - 22:59)
+  {
+    id: 'evening_power',
+    title: 'Вечерняя силовая база',
+    desc: 'Сброс дневного стресса через плотную нагрузку на грудь, плечи и трицепс.',
+    timeMin: 10,
+    timeSlot: 'evening',
+    iconType: 'arms',
+    badgeClass: 'arms',
+    intensity: 'Высокий',
+    tags: ['Вечер', 'Сила', 'Грудь и руки'],
+    exercises: [
+      { id: 'pushups', duration: 35 },
+      { id: 'diamond_pushups', duration: 30 },
+      { id: 'dips_floor', duration: 35 },
+      { id: 'pike_pushups', duration: 30 },
+      { id: 'wide_pushups', duration: 35 }
+    ]
+  },
+  {
     id: 'iron_abs',
-    title: 'Кор и стабилизация',
+    title: 'Кор и рельеф',
     desc: 'Изолированная проработка прямой, косых мышц живота и глубокого мышечного корсета.',
     timeMin: 8,
+    timeSlot: 'evening',
     iconType: 'core',
     badgeClass: 'abs',
-    tags: ['Кор', 'Плотность', 'Рельеф'],
+    intensity: 'Средний',
+    tags: ['Кор', 'Пресс', 'Плотность'],
     exercises: [
       { id: 'crunches', duration: 35 },
       { id: 'bicycle_crunches', duration: 35 },
@@ -288,28 +370,14 @@ const WORKOUTS = [
     ]
   },
   {
-    id: 'arm_power',
-    title: 'Сила: грудь и руки',
-    desc: 'Акцент на трицепс, грудные мышцы и передние дельтовидные с весом тела.',
-    timeMin: 9,
-    iconType: 'arms',
-    badgeClass: 'arms',
-    tags: ['Грудь', 'Трицепс', 'Плечи'],
-    exercises: [
-      { id: 'pushups', duration: 35 },
-      { id: 'diamond_pushups', duration: 30 },
-      { id: 'dips_floor', duration: 35 },
-      { id: 'pike_pushups', duration: 30 },
-      { id: 'wide_pushups', duration: 30 }
-    ]
-  },
-  {
     id: 'full_beast',
     title: 'Интенсивный фуллбоди',
     desc: 'Круговой функциональный комплекс на все мышечные группы и общую выносливость.',
     timeMin: 12,
+    timeSlot: 'power',
     iconType: 'fullbody',
     badgeClass: 'full',
+    intensity: 'Максимум',
     tags: ['Все тело', 'Выносливость', 'Макс темп'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
@@ -322,13 +390,72 @@ const WORKOUTS = [
       { id: 'plank', duration: 45 }
     ]
   },
+
+  // НОЧНЫЕ ПРОГРАММЫ / ПЕРЕД СНОМ (23:00 - 4:59)
+  {
+    id: 'night_reset',
+    title: 'Ночной ресет и заминка',
+    desc: 'Декомпрессия позвоночника, снятие мышечных зажимов и нормализация пульса перед сном.',
+    timeMin: 6,
+    timeSlot: 'night',
+    iconType: 'moon',
+    badgeClass: 'night',
+    intensity: 'Мягкий',
+    tags: ['Ночь', 'Сон', 'Декомпрессия'],
+    exercises: [
+      { id: 'morning_stretch', duration: 50 },
+      { id: 'plank', duration: 30 },
+      { id: 'leg_raises', duration: 30 },
+      { id: 'crunches', duration: 30 },
+      { id: 'morning_stretch', duration: 40 }
+    ]
+  },
+  {
+    id: 'late_night_focus',
+    title: 'Поздний анти-стресс',
+    desc: 'Плавная статодинамика без завышения ЧСС, снимает спазмы и готовит ЦНС к глубокому сну.',
+    timeMin: 5,
+    timeSlot: 'night',
+    iconType: 'moon',
+    badgeClass: 'night',
+    intensity: 'Мягкий',
+    tags: ['Ночь', 'Анти-стресс', 'Релакс'],
+    exercises: [
+      { id: 'morning_stretch', duration: 45 },
+      { id: 'crunches', duration: 30 },
+      { id: 'leg_raises', duration: 30 },
+      { id: 'plank', duration: 35 }
+    ]
+  },
+
+  // СПЕЦИАЛЬНЫЕ / СИЛОВЫЕ
+  {
+    id: 'shadow_warrior',
+    title: 'Бойцовский раунд',
+    desc: 'Серийная работа на плечевой пояс, скорость реакции и взрывную координацию.',
+    timeMin: 7,
+    timeSlot: 'power',
+    iconType: 'arms',
+    badgeClass: 'arms',
+    intensity: 'Высокий',
+    tags: ['Плечи', 'Координация', 'Скорость'],
+    exercises: [
+      { id: 'shadow_boxing', duration: 40 },
+      { id: 'pushups', duration: 30 },
+      { id: 'mountain_climbers', duration: 30 },
+      { id: 'shadow_boxing', duration: 40 },
+      { id: 'plank', duration: 30 }
+    ]
+  },
   {
     id: 'streak_saver',
     title: 'Экспресс 3 минуты',
     desc: 'Короткий интенсивный сет для поддержания непрерывности тренировок.',
     timeMin: 3,
+    timeSlot: 'all',
     iconType: 'shield',
     badgeClass: 'morning',
+    intensity: 'Средний',
     tags: ['3 минуты', 'Экспресс', 'Базовый'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
@@ -770,6 +897,43 @@ const player = new WorkoutPlayer();
 // UI RENDERING FUNCTIONS
 // ==========================================
 
+function getDaytimeRecommendation() {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) {
+    return {
+      slot: 'morning',
+      tag: 'УТРЕННИЙ ЗАПУСК',
+      workoutId: 'morning_kick',
+      title: 'Утреннее пробуждение',
+      subtitle: 'Активация суставов, разгон лимфотока и мягкий тонус для бодрого старта дня.'
+    };
+  } else if (hour >= 12 && hour < 18) {
+    return {
+      slot: 'day',
+      tag: 'ДНЕВНОЙ ТОНУС',
+      workoutId: 'midday_posture',
+      title: 'Офисный ресет и осанка',
+      subtitle: 'Снятие компрессии со спины и шеи после сидения, прилив кислорода и перезагрузка концентрации.'
+    };
+  } else if (hour >= 18 && hour < 23) {
+    return {
+      slot: 'evening',
+      tag: 'ВЕЧЕРНИЙ ФОКУС',
+      workoutId: 'evening_power',
+      title: 'Вечерняя силовая база',
+      subtitle: 'Сброс дневного стресса через плотную нагрузку на грудь, плечи и трицепс.'
+    };
+  } else {
+    return {
+      slot: 'night',
+      tag: 'НОЧНОЙ РЕСЕТ',
+      workoutId: 'night_reset',
+      title: 'Ночная заминка перед сном',
+      subtitle: 'Декомпрессия позвоночника, снятие мышечных зажимов и нормализация пульса перед сном.'
+    };
+  }
+}
+
 function renderHeaderStats() {
   document.getElementById('streakCount').textContent = state.data.streak;
   document.getElementById('userXpCount').textContent = state.data.xp;
@@ -779,22 +943,54 @@ function renderHeaderStats() {
   document.getElementById('userLevelNum').textContent = `Ур. ${current.level}`;
   document.getElementById('levelProgressFill').style.width = `${progressPercent}%`;
 
-  // Update dynamic greeting based on hour
-  const hour = new Date().getHours();
-  let greet = 'Утренняя сессия';
-  if (hour >= 12 && hour < 18) greet = 'Дневная сессия';
-  else if (hour >= 18 && hour < 23) greet = 'Вечерняя сессия';
-  else if (hour >= 23 || hour < 5) greet = 'Ночной тренинг';
-  document.getElementById('greetingTitle').textContent = greet;
+  // Dynamic daytime recommendation for Hero Banner
+  const rec = getDaytimeRecommendation();
+  const recWorkout = WORKOUTS.find(w => w.id === rec.workoutId) || WORKOUTS[0];
+
+  const heroTagEl = document.getElementById('heroTag');
+  if (heroTagEl) heroTagEl.textContent = rec.tag;
+
+  const greetTitleEl = document.getElementById('greetingTitle');
+  if (greetTitleEl) greetTitleEl.textContent = rec.title;
+
+  const heroSubtitleEl = document.getElementById('heroSubtitle');
+  if (heroSubtitleEl) heroSubtitleEl.textContent = rec.subtitle;
+
+  const heroDurationEl = document.getElementById('heroDurationText');
+  if (heroDurationEl) heroDurationEl.textContent = `${recWorkout.timeMin} мин`;
+
+  const heroExCountEl = document.getElementById('heroExercisesCount');
+  if (heroExCountEl) heroExCountEl.textContent = recWorkout.exercises.length;
+
+  const heroKcalEl = document.getElementById('heroCaloriesText');
+  if (heroKcalEl) heroKcalEl.textContent = `~${Math.round(recWorkout.timeMin * 8.5)}`;
+
+  const heroXpEl = document.getElementById('heroXpText');
+  if (heroXpEl) heroXpEl.textContent = `+${recWorkout.timeMin * 12}`;
 }
 
-function renderWorkoutsList() {
+function renderWorkoutsList(filter = 'all') {
   const container = document.getElementById('workoutsListContainer');
   container.innerHTML = '';
 
-  WORKOUTS.forEach(w => {
-    if (w.id === 'streak_saver') return; // Dedicated card
+  const filtered = WORKOUTS.filter(w => {
+    if (w.id === 'streak_saver') return false; // Dedicated card
+    if (filter === 'all') return true;
+    if (filter === 'morning') return w.timeSlot === 'morning';
+    if (filter === 'day') return w.timeSlot === 'day';
+    if (filter === 'evening') return w.timeSlot === 'evening';
+    if (filter === 'night') return w.timeSlot === 'night';
+    if (filter === 'power') return w.timeSlot === 'power' || w.timeSlot === 'evening';
+    return true;
+  });
 
+  const counterEl = document.getElementById('workoutCountLabel');
+  if (counterEl) {
+    const word = filtered.length === 1 ? 'программа' : (filtered.length >= 2 && filtered.length <= 4 ? 'программы' : 'программ');
+    counterEl.textContent = `${filtered.length} ${word}`;
+  }
+
+  filtered.forEach(w => {
     const iconSvg = ICONS[w.iconType] || ICONS.arms;
     const card = document.createElement('div');
     card.className = 'workout-card';
@@ -981,9 +1177,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Hero Quick Start
+  // Hero Quick Start (launches dynamic recommended workout)
   document.getElementById('heroQuickStartBtn').addEventListener('click', () => {
-    const quickWorkout = WORKOUTS.find(w => w.id === 'morning_kick') || WORKOUTS[0];
+    const rec = getDaytimeRecommendation();
+    const quickWorkout = WORKOUTS.find(w => w.id === rec.workoutId) || WORKOUTS[0];
     player.start(quickWorkout);
   });
 
@@ -1003,7 +1200,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('exerciseInfoModal').classList.remove('active');
   });
 
-  // Exercise filters
+  // Workout time-of-day filters
+  const workoutPills = document.querySelectorAll('#workoutFilterPills .pill');
+  workoutPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      workoutPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      renderWorkoutsList(pill.getAttribute('data-filter'));
+    });
+  });
+
+  // Exercise library filters
   const filterPills = document.querySelectorAll('#exerciseFilterPills .pill');
   filterPills.forEach(pill => {
     pill.addEventListener('click', () => {

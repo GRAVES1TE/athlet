@@ -649,6 +649,18 @@ button, a, input, select {
   border-color: rgba(249, 115, 22, 0.2);
 }
 
+.workout-icon-box.day {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.workout-icon-box.night {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.2);
+}
+
 .workout-info {
   flex: 1;
   min-width: 0;

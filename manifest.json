@@ -1,11 +1,13 @@
 {
-  "name": "Атлет: Домашние Тренировки",
+  "name": "Атлет — Домашние Тренировки и Таймер",
   "short_name": "Атлет",
+  "description": "Персональные адаптивные тренировки с собственным весом под любое время суток без инвентаря.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#090d16",
+  "background_color": "#090a0e",
+  "theme_color": "#090a0e",
   "orientation": "portrait",
+  "categories": ["fitness", "health", "sports"],
   "icons": [
     {
       "src": "icon-192.png",

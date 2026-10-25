@@ -67,33 +67,33 @@
           <!-- Daily Focus Hero Banner -->
           <div class="hero-banner">
             <div class="hero-top-meta">
-              <span class="hero-tag">ФОКУС ДНЯ</span>
+              <span class="hero-tag" id="heroTag">ФОКУС СЕЙЧАС</span>
               <span class="hero-duration-chip">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                 </svg>
-                6–8 мин
+                <span id="heroDurationText">6–8 мин</span>
               </span>
             </div>
             
             <div class="hero-text">
               <h1 class="hero-title" id="greetingTitle">Тренировка дня</h1>
-              <p class="hero-subtitle">Высокая плотность, собственный вес. Запуск метаболизма и укрепление кора без инвентаря.</p>
+              <p class="hero-subtitle" id="heroSubtitle">Высокая плотность, собственный вес. Запуск метаболизма и укрепление кора без инвентаря.</p>
             </div>
 
             <div class="hero-metrics-strip">
               <div class="h-metric">
-                <span class="h-metric-val">5</span>
+                <span class="h-metric-val" id="heroExercisesCount">5</span>
                 <span class="h-metric-lbl">упражнений</span>
               </div>
               <div class="h-metric-divider"></div>
               <div class="h-metric">
-                <span class="h-metric-val">~70</span>
+                <span class="h-metric-val" id="heroCaloriesText">~70</span>
                 <span class="h-metric-lbl">ккал</span>
               </div>
               <div class="h-metric-divider"></div>
               <div class="h-metric">
-                <span class="h-metric-val">+110</span>
+                <span class="h-metric-val" id="heroXpText">+110</span>
                 <span class="h-metric-lbl">XP</span>
               </div>
             </div>
@@ -132,9 +132,19 @@
           <div class="section-heading">
             <div class="heading-title-group">
               <h2>Программы</h2>
-              <span class="heading-counter">4 сессии</span>
+              <span class="heading-counter" id="workoutCountLabel">10 программ</span>
             </div>
-            <span class="section-sub">Калистеника и круговой тренинг</span>
+            <span class="section-sub">Калистеника и адаптивные сеты под время суток</span>
+          </div>
+
+          <!-- Time of Day & Focus Filter Pills -->
+          <div class="filter-pills" id="workoutFilterPills">
+            <button class="pill active" data-filter="all">Все</button>
+            <button class="pill" data-filter="morning">Утро</button>
+            <button class="pill" data-filter="day">День</button>
+            <button class="pill" data-filter="evening">Вечер</button>
+            <button class="pill" data-filter="night">Ночь</button>
+            <button class="pill" data-filter="power">Силовые</button>
           </div>
 
           <div class="workout-grid" id="workoutsListContainer">
