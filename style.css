@@ -1043,6 +1043,11 @@ button, a, input, select {
   flex-shrink: 0;
 }
 
+.guide-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
 .guide-details {
   flex: 1;
   min-width: 0;
@@ -1486,6 +1491,11 @@ input:checked + .slider:before {
   justify-content: center;
   color: var(--accent-volt);
   box-shadow: var(--shadow-md);
+}
+
+.exercise-animated-avatar svg {
+  width: 44px;
+  height: 44px;
 }
 
 .target-muscles-tag {
@@ -1955,6 +1965,11 @@ input:checked + .slider:before {
   justify-content: center;
   color: var(--accent-volt);
   margin-bottom: 4px;
+}
+
+.info-icon svg {
+  width: 30px;
+  height: 30px;
 }
 
 .info-muscle-badge {

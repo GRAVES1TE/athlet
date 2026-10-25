@@ -83,19 +83,44 @@ const ICONS = {
 };
 
 const EXERCISE_VISUALS = {
-  pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M7 14l3-6 4 2 3 4"/><circle cx="10" cy="6" r="2"/></svg>`,
-  diamond_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><polygon points="12 6 16 11 12 15 8 11 12 6"/></svg>`,
-  dips_floor: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h14"/><path d="M7 15v4"/><path d="M17 15v4"/><path d="M9 7v5h6V7"/><circle cx="12" cy="4" r="2"/></svg>`,
-  wide_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20"/><path d="M5 14l4-5 3 1 3-1 4 5"/><circle cx="12" cy="7" r="2"/></svg>`,
-  pike_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18l6-11 6 11"/><circle cx="12" cy="5" r="2"/></svg>`,
-  crunches: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18c2-4 5-6 8-6h4"/><circle cx="15" cy="8" r="2"/></svg>`,
-  plank: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 15h14"/><line x1="6" y1="15" x2="6" y2="18"/><line x1="18" y1="15" x2="18" y2="18"/><circle cx="4" cy="14" r="1.5"/></svg>`,
-  bicycle_crunches: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="3"/><circle cx="18" cy="15" r="3"/><path d="M6 15l4-5 4 2 4 3"/><circle cx="14" cy="7" r="2"/></svg>`,
-  leg_raises: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 18h6l6-9"/><circle cx="4" cy="16" r="2"/></svg>`,
-  mountain_climbers: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18l3-6 4 2 2-4 3 8"/><circle cx="18" cy="8" r="2"/></svg>`,
-  jumping_jacks: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="m7 9 5 3 5-3"/><path d="M12 12v4"/><path d="m9 20 3-4 3 4"/></svg>`,
-  morning_stretch: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 18c3-8 8-9 12-4"/><circle cx="18" cy="12" r="2"/></svg>`,
-  shadow_boxing: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v6"/><path d="m7 11 5-1 4 2 4-2"/><path d="m9 20 3-6.5 2 6.5"/></svg>`
+  // Классические отжимания: горизонтальный упор, локти 45°, прямая линия тела
+  pushups: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="5" cy="11.5" r="1.8"/><path d="M6.8 13L14 15.5l6.5 4"/><path d="M7 13.5l2.5 3-2.5 3.5"/></svg>`,
+
+  // Алмазные отжимания: сведение ладоней треугольником под грудью
+  diamond_pushups: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="12" cy="5.5" r="1.8"/><path d="M8 10h8"/><path d="M8 10l2 5.5 2 1.5"/><path d="M16 10l-2 5.5-2 1.5"/><polygon points="12 17 13.8 18.5 12 20 10.2 18.5"/><path d="M12 10v4"/></svg>`,
+
+  // Обратные отжимания: опора сзади, локти 90° назад, корпус опускается вертикально
+  dips_floor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M3 14h4v6"/><circle cx="9" cy="7" r="1.8"/><path d="M9 9v6"/><path d="M8.5 10.5l-3.5 1.5v2"/><path d="M9 15h4.5l3.5 5"/></svg>`,
+
+  // Широкие отжимания: широкая постановка ладоней шире плеч
+  wide_pushups: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="12" cy="6.5" r="1.8"/><path d="M7 11h10"/><path d="M7 11L3 15.5V20"/><path d="M17 11L21 15.5V20"/><path d="M12 11v6l-2.5 3"/><path d="M12 17l2.5 3"/></svg>`,
+
+  // Пайк-отжимания: положение "домик" / уголок, таз вверх, опускание макушкой
+  pike_pushups: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5.5 20l2.5-6.5L13 6l6 14"/><circle cx="6" cy="16" r="1.8"/><path d="M8 13.5l-2 2.5"/></svg>`,
+
+  // Скручивания на кор: подъем корпуса к согнутым коленям
+  crunches: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="5" cy="10.5" r="1.8"/><path d="M6.5 12c1.8 1.8 3.5 4.5 4.5 8H12"/><path d="M12 20l4-7 4.5 7"/><path d="M5.5 12.5l4-1.5"/></svg>`,
+
+  // Классическая планка: предплечья на полу, идеальная горизонтальная линия
+  plank: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="4.5" cy="11.5" r="1.8"/><path d="M6.5 13L14 15l6.5 5"/><path d="M6.8 13.5v6.5H11"/></svg>`,
+
+  // Диагональные скручивания: локоть к противоположному колену, выпрямление второй ноги
+  bicycle_crunches: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="4.5" cy="11" r="1.8"/><path d="M6 12.5c2 1.5 3.5 3.5 4.5 7"/><path d="M6.5 12l4-1"/><path d="M10.5 19.5l2-6.5-2.5-4"/><path d="M10.5 19.5l6-3.5 4.5 1"/></svg>`,
+
+  // Подъемы ног лежа: спина прижата, прямые ноги поднимаются вверх
+  leg_raises: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="4.5" cy="16.5" r="1.8"/><path d="M6.5 18.5H12"/><path d="M12 18.5L16.5 6.5"/><path d="M18.5 9.5l-2-3-3 2"/></svg>`,
+
+  // Скалолаз: упор лежа, динамическое подтягивание колена к груди
+  mountain_climbers: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="5" cy="8.5" r="1.8"/><path d="M7 10.5L14 13l6.5 7"/><path d="M6.5 10.5V20"/><path d="M14 13l-4 3 2 4"/></svg>`,
+
+  // Джампинг Джек: прыжок со взмахом рук вверх и разведением ног
+  jumping_jacks: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1.8"/><path d="M12 6v7"/><path d="M3.5 4.5l8.5 3.5 8.5-3.5"/><path d="M5 21l7-8 7 8"/><path d="M8.5 22h7" stroke-dasharray="2 2"/></svg>`,
+
+  // Мобилизация позвоночника: кобра / прогиб назад с опорой на руки
+  morning_stretch: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><circle cx="7" cy="5.5" r="1.8"/><path d="M6.5 7.5c0 5 2.5 8.5 6 12.5H21"/><path d="M7 8.5v11.5"/></svg>`,
+
+  // Бой с тенью: боксерская стойка, защита подбородка и прямой удар
+  shadow_boxing: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="4.5" r="1.8"/><path d="M7.5 6.5v7"/><path d="M7.5 13.5L4 20"/><path d="M7.5 13.5l4.5 6.5"/><path d="M7.5 8.5l-2.5 2.5 2.5 1"/><path d="M7.5 8.5h9"/><circle cx="17.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M19.5 6.5h2.5M19.5 10.5h2.5"/></svg>`
 };
 
 // ==========================================
