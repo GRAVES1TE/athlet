@@ -1,8 +1,8 @@
 // ==========================================
-// ATHLET APP — CORE ENGINE
+// ATHLET PRO — CORE ENGINE & STATE
 // ==========================================
 
-// Sound Synthesizer (Zero external audio files needed, works offline)
+// Sound Synthesizer (Zero external audio files, pure Web Audio)
 class SoundFx {
   constructor() {
     this.ctx = null;
@@ -19,7 +19,7 @@ class SoundFx {
     }
   }
 
-  beep(freq = 600, duration = 0.1, type = 'sine') {
+  beep(freq = 600, duration = 0.08, type = 'sine', volume = 0.12) {
     if (!this.enabled) return;
     this.init();
     if (!this.ctx) return;
@@ -29,8 +29,8 @@ class SoundFx {
       const gain = this.ctx.createGain();
       osc.type = type;
       osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+      gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -42,11 +42,11 @@ class SoundFx {
   }
 
   shortCountdownBeep() {
-    this.beep(550, 0.1, 'sine');
+    this.beep(640, 0.07, 'sine', 0.1);
   }
 
   startFinishBeep() {
-    this.beep(880, 0.35, 'triangle');
+    this.beep(880, 0.22, 'triangle', 0.15);
   }
 
   fanfare() {
@@ -54,13 +54,49 @@ class SoundFx {
     const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
     notes.forEach((freq, idx) => {
       setTimeout(() => {
-        this.beep(freq, 0.25, 'triangle');
-      }, idx * 120);
+        this.beep(freq, 0.2, 'sine', 0.14);
+      }, idx * 110);
     });
   }
 }
 
 const sfx = new SoundFx();
+
+// ==========================================
+// VECTOR ICONS REGISTRY (NO EMOJIS)
+// ==========================================
+const ICONS = {
+  play: `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>`,
+  pause: `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.5"/><rect x="14" y="4" width="4" height="16" rx="1.5"/></svg>`,
+  soundOn: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`,
+  soundOff: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`,
+  chevronRight: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`,
+  info: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+  sun: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
+  core: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>`,
+  arms: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1a2 2 0 0 0-2.83 0l-.88.88a2 2 0 0 1-2.83 0l-4.24-4.24a2 2 0 0 1 0-2.83l.88-.88a2 2 0 0 0 0-2.83L10 9"/><path d="m3 3 1 1a2 2 0 0 0 2.83 0l.88-.88a2 2 0 0 1 2.83 0l4.24 4.24a2 2 0 0 1 0 2.83l-.88.88a2 2 0 0 0 0 2.83L14 15"/></svg>`,
+  fullbody: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  shield: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  check: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  clock: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  medal: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`
+};
+
+const EXERCISE_VISUALS = {
+  pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M7 14l3-6 4 2 3 4"/><circle cx="10" cy="6" r="2"/></svg>`,
+  diamond_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><polygon points="12 6 16 11 12 15 8 11 12 6"/></svg>`,
+  dips_floor: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19h14"/><path d="M7 15v4"/><path d="M17 15v4"/><path d="M9 7v5h6V7"/><circle cx="12" cy="4" r="2"/></svg>`,
+  wide_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20"/><path d="M5 14l4-5 3 1 3-1 4 5"/><circle cx="12" cy="7" r="2"/></svg>`,
+  pike_pushups: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18l6-11 6 11"/><circle cx="12" cy="5" r="2"/></svg>`,
+  crunches: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18c2-4 5-6 8-6h4"/><circle cx="15" cy="8" r="2"/></svg>`,
+  plank: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 15h14"/><line x1="6" y1="15" x2="6" y2="18"/><line x1="18" y1="15" x2="18" y2="18"/><circle cx="4" cy="14" r="1.5"/></svg>`,
+  bicycle_crunches: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="3"/><circle cx="18" cy="15" r="3"/><path d="M6 15l4-5 4 2 4 3"/><circle cx="14" cy="7" r="2"/></svg>`,
+  leg_raises: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 18h6l6-9"/><circle cx="4" cy="16" r="2"/></svg>`,
+  mountain_climbers: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M6 18l3-6 4 2 2-4 3 8"/><circle cx="18" cy="8" r="2"/></svg>`,
+  jumping_jacks: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="m7 9 5 3 5-3"/><path d="M12 12v4"/><path d="m9 20 3-4 3 4"/></svg>`,
+  morning_stretch: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19h18"/><path d="M5 18c3-8 8-9 12-4"/><circle cx="18" cy="12" r="2"/></svg>`,
+  shadow_boxing: `<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v6"/><path d="m7 11 5-1 4 2 4-2"/><path d="m9 20 3-6.5 2 6.5"/></svg>`
+};
 
 // ==========================================
 // EXERCISES DATABASE
@@ -72,9 +108,8 @@ const EXERCISES = {
     name: 'Классические отжимания',
     category: 'arms',
     muscles: 'Грудь • Трицепс • Плечи',
-    icon: '💪',
-    tip: 'Корпус в одну линию, не прогибай таз, локти под 45 градусов к телу.',
-    proTip: 'Опускайся медленно (2 секунды), а выжимай мощно вверх — это дает максимальный рост мышц.',
+    tip: 'Корпус в одну прямую линию. Локти под углом 45 градусов, лопатки сведены в нижней точке.',
+    proTip: 'Опускайтесь подконтрольно за 2 секунды, выполняйте подъем мощно за 1 секунду.',
     repsEquivalent: 15
   },
   diamond_pushups: {
@@ -82,123 +117,111 @@ const EXERCISES = {
     name: 'Алмазные отжимания',
     category: 'arms',
     muscles: 'Трицепс (акцент) • Внутренняя грудь',
-    icon: '💎',
-    tip: 'Большие и указательные пальцы соедини в форме алмаза прямо под грудью.',
-    proTip: 'Трицепс формирует 60% объема руки! Это главное упражнение для мощных рук без железа.',
+    tip: 'Большие и указательные пальцы соединены треугольником прямо под центром груди.',
+    proTip: 'Держите локти ближе к корпусу для максимальной изоляции трицепса.',
     repsEquivalent: 12
   },
   dips_floor: {
     id: 'dips_floor',
-    name: 'Обратные отжимания от пола / стула',
+    name: 'Обратные отжимания от пола / опоры',
     category: 'arms',
     muscles: 'Трицепс • Передняя дельта',
-    icon: '🪑',
-    tip: 'Сядь на пол или край дивана, руки за спиной пальцами вперед, опускайся сгибая локти.',
-    proTip: 'Не разводи локти в стороны — направляй их строго назад.',
+    tip: 'Упор руками сзади корпуса пальцами вперед. Опускайтесь вертикально сгибая локти назад.',
+    proTip: 'Не разводите локти в стороны — направляйте их строго назад.',
     repsEquivalent: 15
   },
   wide_pushups: {
     id: 'wide_pushups',
     name: 'Широкие отжимания',
     category: 'arms',
-    muscles: 'Широкая грудь • Плечи',
-    icon: '🦅',
-    tip: 'Руки поставь значительно шире плеч. Сфокусируйся на сжатии мышц груди в верхней точке.',
-    proTip: 'В верхней точке задержись на полсекунды и мысленно сожми грудные мышцы.',
+    muscles: 'Грудные мышцы (широкий хват) • Плечи',
+    tip: 'Постановка ладоней шире плеч на 20-30 см. Сфокусируйтесь на сведении грудных мышц.',
+    proTip: 'В верхней точке задержитесь на 0.5 секунды и мысленно сожмите грудь.',
     repsEquivalent: 12
   },
   pike_pushups: {
     id: 'pike_pushups',
-    name: 'Пайк-отжимания («Домик»)',
+    name: 'Пайк-отжимания (Уголок)',
     category: 'arms',
-    muscles: 'Плечи (дельты) • Верх груди',
-    icon: '🧗',
-    tip: 'Таз поднят вверх углом (буква Л), опускайся макушкой к полу между ладонями.',
-    proTip: 'Главный заменитель армейского жима штанги без какого-либо инвентаря!',
+    muscles: 'Дельтовидные мышцы • Верх груди',
+    tip: 'Таз поднят вверх углом. Опускайтесь макушкой к полу между ладонями по диагонали.',
+    proTip: 'Базовый заменитель жима над головой с собственным весом.',
     repsEquivalent: 10
   },
 
   // Пресс и кор
   crunches: {
     id: 'crunches',
-    name: 'Скручивания на пресс',
+    name: 'Скручивания на кор',
     category: 'abs',
     muscles: 'Прямая мышца живота (верх)',
-    icon: '🍫',
-    tip: 'Поясница плотно прижата к полу! Не тяни себя руками за шею, смотри в потолок.',
-    proTip: 'Делай сильный выдох на подъеме — так пресс сокращается на 100%.',
+    tip: 'Поясница плотно прижата к полу. Не тяните шею руками, взгляд направлен вверх под углом 45°.',
+    proTip: 'Делайте акцентированный выдох в верхней точке сокращения пресса.',
     repsEquivalent: 20
   },
   plank: {
     id: 'plank',
     name: 'Классическая планка',
     category: 'abs',
-    muscles: 'Весь кор • Поперечная мышца • Спина',
-    icon: '📏',
-    tip: 'Локти под плечами, ягодицы напряжены, таз подкручен вперед, дыши ровно.',
-    proTip: 'Не задерживай дыхание! Напряги пресс так, будто ждешь легкого удара.',
+    muscles: 'Глубокий кор • Поперечная мышца • Спина',
+    tip: 'Локти строго под плечами, ягодицы сжаты, таз в нейтральном положении, ровное дыхание.',
+    proTip: 'Не задерживайте дыхание, создайте максимальное статическое напряжение кора.',
     repsEquivalent: 0
   },
   bicycle_crunches: {
     id: 'bicycle_crunches',
-    name: 'Велосипед на спине',
+    name: 'Диагональные скручивания',
     category: 'abs',
-    muscles: 'Косые мышцы • Нижний пресс',
-    icon: '🚴',
-    tip: 'Поочередно касайся правым локтем левого колена и наоборот. Не спеши!',
-    proTip: 'Ученые из Сан-Диего признали велосипед упражнением №1 для рельефного пресса.',
+    muscles: 'Косые мышцы • Нижний сегмент пресса',
+    tip: 'Поочередно направляйте локоть к противоположному колену. Контролируйте темп.',
+    proTip: 'Сохраняйте постоянное натяжение мышц, не бросайте плечи на пол.',
     repsEquivalent: 20
   },
   leg_raises: {
     id: 'leg_raises',
     name: 'Подъемы ног лежа',
     category: 'abs',
-    muscles: 'Нижний пресс (акцент)',
-    icon: '📐',
-    tip: 'Руки вдоль тела или чуть под ягодицы. Медленно опускай ноги, не отрывая поясницу.',
-    proTip: 'Останавливай ноги в 5 см от пола — это удерживает постоянное жжение в прессе.',
+    muscles: 'Нижний сегмент пресса • Сгибатели бедра',
+    tip: 'Руки вдоль тела или под крестцом. Медленно опускайте прямые ноги, контролируя поясницу.',
+    proTip: 'Не касайтесь пятками пола в нижней точке — сохраняйте 5 см дистанции.',
     repsEquivalent: 15
   },
   mountain_climbers: {
     id: 'mountain_climbers',
-    name: 'Скалолаз в планке',
+    name: 'Скалолаз в упоре лежа',
     category: 'abs',
-    muscles: 'Пресс • Кардио • Плечи',
-    icon: '⚡',
-    tip: 'Из упора лежа быстро подтягивай колени к груди по очереди в активном темпе.',
-    proTip: 'Отлично сжигает подкожный жир над прессом, разгоняя метаболизм.',
+    muscles: 'Кор • Динамическая стабилизация • Плечи',
+    tip: 'Из упора лежа подтягивайте колени к груди в четком циклическом темпе.',
+    proTip: 'Держите таз на одном уровне, избегайте раскачивания корпуса.',
     repsEquivalent: 30
   },
 
-  // Утро / Разминка
+  // Мобильность / Разминка
   jumping_jacks: {
     id: 'jumping_jacks',
-    name: 'Прыжки Джампинг Джек',
+    name: 'Джампинг Джек (Синхронные прыжки)',
     category: 'morning',
-    muscles: 'Разминка • Кардио • Лимфоток',
-    icon: '⭐',
-    tip: 'Мягко пружинь на носочках, синхронно разводя ноги и хлопая руками над головой.',
-    proTip: 'Идеально пробуждает нервную систему и лимфу за первые 30 секунд.',
+    muscles: 'Разминка • Кардиопульмональный тонус',
+    tip: 'Мягкое приземление на переднюю часть стопы, синхронный мах руками над головой.',
+    proTip: 'Оптимальное движение для разогрева суставов и разгона лимфотока.',
     repsEquivalent: 25
   },
   morning_stretch: {
     id: 'morning_stretch',
-    name: 'Кобра + Собака мордой вниз',
+    name: 'Динамическая мобилизация позвоночника',
     category: 'morning',
-    muscles: 'Позвоночник • Плечи • Растяжка',
-    icon: '🧘',
-    tip: 'Плавный переход из вытяжения спины лежа в положение треугольника.',
-    proTip: 'Снимает скованность после сна и выпрямляет осанку.',
+    muscles: 'Позвоночный столб • Плечевой пояс • Задняя цепь',
+    tip: 'Плавный контролируемый переход из вытяжения лежа в позицию треугольника.',
+    proTip: 'Снимает постуральную скованность и нормализует тонус спины.',
     repsEquivalent: 0
   },
   shadow_boxing: {
     id: 'shadow_boxing',
-    name: 'Бой с тенью (Удары руками)',
+    name: 'Серийный бой с тенью',
     category: 'morning',
-    muscles: 'Плечи • Кор • Реакция',
-    icon: '🥊',
-    tip: 'Легкие прямые и боковые удары в воздух с постоянным смещением центра тяжести.',
-    proTip: 'Разминает плечевые суставы и поднимает уровень энергии без утомления.',
+    muscles: 'Плечевой пояс • Кор • Скорость реакции',
+    tip: 'Легкие прямые и боковые движения с переносом центра тяжести и активной работой корпуса.',
+    proTip: 'Разогревает ротаторную манжету плеча и активирует нервную систему.',
     repsEquivalent: 40
   }
 };
@@ -209,12 +232,12 @@ const EXERCISES = {
 const WORKOUTS = [
   {
     id: 'morning_kick',
-    title: 'Утренний Запал',
-    desc: 'Быстро проснуться, включить кровоток и зарядить энергией на весь день.',
+    title: 'Утренний комплекс',
+    desc: 'Активация суставов, разгон лимфотока и подготовка нервной системы к рабочему дню.',
     timeMin: 6,
-    icon: '☀️',
+    iconType: 'sun',
     badgeClass: 'morning',
-    tags: ['Утро', 'Легко', 'Без пота'],
+    tags: ['Мобильность', 'Тонус', 'Без пота'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
       { id: 'morning_stretch', duration: 40 },
@@ -225,12 +248,12 @@ const WORKOUTS = [
   },
   {
     id: 'iron_abs',
-    title: 'Стальной Пресс & Кубики',
-    desc: 'Целевая прокачка верха, низа и косых мышц. Плоский и рельефный живот.',
+    title: 'Кор и стабилизация',
+    desc: 'Изолированная проработка прямой, косых мышц живота и глубокого мышечного корсета.',
     timeMin: 8,
-    icon: '🍫',
+    iconType: 'core',
     badgeClass: 'abs',
-    tags: ['Пресс', 'Рельеф', 'Жиросжигание'],
+    tags: ['Кор', 'Плотность', 'Рельеф'],
     exercises: [
       { id: 'crunches', duration: 35 },
       { id: 'bicycle_crunches', duration: 35 },
@@ -241,12 +264,12 @@ const WORKOUTS = [
   },
   {
     id: 'arm_power',
-    title: 'Руки, Плечи и Грудь',
-    desc: 'Алмазный трицепс, широкая грудная клетка и круглые дельты своим весом.',
+    title: 'Сила: грудь и руки',
+    desc: 'Акцент на трицепс, грудные мышцы и передние дельтовидные с весом тела.',
     timeMin: 9,
-    icon: '💪',
+    iconType: 'arms',
     badgeClass: 'arms',
-    tags: ['Руки', 'Грудь', 'Плечи'],
+    tags: ['Грудь', 'Трицепс', 'Плечи'],
     exercises: [
       { id: 'pushups', duration: 35 },
       { id: 'diamond_pushups', duration: 30 },
@@ -257,12 +280,12 @@ const WORKOUTS = [
   },
   {
     id: 'full_beast',
-    title: 'Фуллбоди Спартанец',
-    desc: 'Сбалансированный комплекс на руки, кор и выносливость.',
+    title: 'Интенсивный фуллбоди',
+    desc: 'Круговой функциональный комплекс на все мышечные группы и общую выносливость.',
     timeMin: 12,
-    icon: '🔥',
+    iconType: 'fullbody',
     badgeClass: 'full',
-    tags: ['Все тело', 'Интенсивно', 'Макс XP'],
+    tags: ['Все тело', 'Выносливость', 'Макс темп'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
       { id: 'pushups', duration: 35 },
@@ -276,12 +299,12 @@ const WORKOUTS = [
   },
   {
     id: 'streak_saver',
-    title: 'Спасение Стрика',
-    desc: 'Всего 3 минуты! Когда лень, устал или мало времени — чтобы огонь 🔥 не погас.',
+    title: 'Экспресс 3 минуты',
+    desc: 'Короткий интенсивный сет для поддержания непрерывности тренировок.',
     timeMin: 3,
-    icon: '🛡️',
+    iconType: 'shield',
     badgeClass: 'morning',
-    tags: ['3 минуты', 'Анти-лень', 'Стрик'],
+    tags: ['3 минуты', 'Экспресс', 'Базовый'],
     exercises: [
       { id: 'jumping_jacks', duration: 30 },
       { id: 'pushups', duration: 30 },
@@ -292,17 +315,17 @@ const WORKOUTS = [
 ];
 
 // ==========================================
-// RPG LEVEL SYSTEM
+// ATHLETIC PROGRESSION RANKS
 // ==========================================
 const RANKS = [
-  { level: 1, xpReq: 0, title: 'Диванный Воин', icon: '🛋️' },
-  { level: 2, xpReq: 150, title: 'Просыпающийся', icon: '⚡' },
-  { level: 3, xpReq: 350, title: 'Фитнес-Энтузиаст', icon: '🏃' },
-  { level: 4, xpReq: 650, title: 'Атлет Дома', icon: '💪' },
-  { level: 5, xpReq: 1100, title: 'Рельефный Мастер', icon: '🍫' },
-  { level: 6, xpReq: 1700, title: 'Спартанец', icon: '🛡️' },
-  { level: 7, xpReq: 2500, title: 'Неудержимая Машина', icon: '🦾' },
-  { level: 8, xpReq: 3500, title: 'Легенда Калистеники', icon: '👑' }
+  { level: 1, xpReq: 0, title: 'Старт (Level 1)' },
+  { level: 2, xpReq: 150, title: 'Атлет I' },
+  { level: 3, xpReq: 350, title: 'Атлет II' },
+  { level: 4, xpReq: 650, title: 'Прогресс' },
+  { level: 5, xpReq: 1100, title: 'Интенсив' },
+  { level: 6, xpReq: 1700, title: 'Мастер формы' },
+  { level: 7, xpReq: 2500, title: 'Профи' },
+  { level: 8, xpReq: 3500, title: 'Элита' }
 ];
 
 // ==========================================
@@ -370,7 +393,6 @@ class StateManager {
     const today = this.getTodayStr();
     const yesterday = this.getYesterdayStr();
 
-    // If last workout was neither today nor yesterday, streak broken
     if (this.data.lastWorkoutDate !== today && this.data.lastWorkoutDate !== yesterday) {
       this.data.streak = 0;
       this.save();
@@ -465,6 +487,7 @@ class WorkoutPlayer {
     this.modal = document.getElementById('workoutPlayerModal');
     this.titleEl = document.getElementById('playerWorkoutTitle');
     this.stepEl = document.getElementById('playerStepIndicator');
+    this.stepSegmentsEl = document.getElementById('playerStepSegments');
     this.exNameEl = document.getElementById('playerExerciseName');
     this.exTipEl = document.getElementById('playerExerciseTip');
     this.musclesEl = document.getElementById('playerMusclesTag');
@@ -477,8 +500,8 @@ class WorkoutPlayer {
     this.restTimerEl = document.getElementById('restTimerDisplay');
     this.nextExerciseNameEl = document.getElementById('nextExerciseName');
 
-    // Ring circumference: 2 * PI * 80 ~= 502.65
-    this.circumference = 2 * Math.PI * 80;
+    // Ring circumference: 2 * PI * 88 ~= 552.92
+    this.circumference = 2 * Math.PI * 88;
     if (this.progressRing) {
       this.progressRing.style.strokeDasharray = `${this.circumference} ${this.circumference}`;
       this.progressRing.style.strokeDashoffset = '0';
@@ -499,7 +522,7 @@ class WorkoutPlayer {
     const muteBtn = document.getElementById('playerMuteToggle');
     muteBtn.addEventListener('click', () => {
       sfx.enabled = !sfx.enabled;
-      muteBtn.textContent = sfx.enabled ? '🔊' : '🔇';
+      muteBtn.innerHTML = sfx.enabled ? ICONS.soundOn : ICONS.soundOff;
     });
   }
 
@@ -515,6 +538,16 @@ class WorkoutPlayer {
     this.modal.classList.add('active');
     sfx.startFinishBeep();
 
+    // Render step segments
+    if (this.stepSegmentsEl) {
+      this.stepSegmentsEl.innerHTML = '';
+      for (let i = 0; i < workout.exercises.length; i++) {
+        const seg = document.createElement('div');
+        seg.className = 'step-segment';
+        this.stepSegmentsEl.appendChild(seg);
+      }
+    }
+
     this.loadCurrentStep();
   }
 
@@ -529,15 +562,31 @@ class WorkoutPlayer {
     this.stepEl.textContent = `${this.stepIndex + 1} из ${this.workout.exercises.length}`;
     this.exNameEl.textContent = exData.name;
     this.exTipEl.textContent = exData.tip;
-    this.musclesEl.textContent = exData.muscles;
-    this.avatarEl.textContent = exData.icon;
+    this.musclesEl.textContent = exData.muscles.toUpperCase();
+    
+    // Vector visual representation
+    this.avatarEl.innerHTML = EXERCISE_VISUALS[step.id] || ICONS.arms;
+
+    // Update segments
+    if (this.stepSegmentsEl) {
+      const segs = this.stepSegmentsEl.querySelectorAll('.step-segment');
+      segs.forEach((seg, idx) => {
+        if (idx < this.stepIndex) {
+          seg.className = 'step-segment completed';
+        } else if (idx === this.stepIndex) {
+          seg.className = 'step-segment active';
+        } else {
+          seg.className = 'step-segment';
+        }
+      });
+    }
 
     this.secondsLeft = step.duration;
     this.currentExerciseTotalSeconds = step.duration;
     this.updateTimerDisplay();
     this.updateProgressRing(1, true);
 
-    this.pausePlayBtn.textContent = '⏸';
+    this.pausePlayBtn.innerHTML = ICONS.pause;
     this.isPaused = false;
 
     this.startCountdown();
@@ -587,7 +636,6 @@ class WorkoutPlayer {
     if (immediate) {
       this.progressRing.style.transition = 'none';
       this.progressRing.style.strokeDashoffset = offset;
-      // Force repaint to flush instantaneous offset
       void this.progressRing.getBoundingClientRect();
       this.progressRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
     } else {
@@ -626,7 +674,7 @@ class WorkoutPlayer {
 
   togglePausePlay() {
     this.isPaused = !this.isPaused;
-    this.pausePlayBtn.textContent = this.isPaused ? '▶' : '⏸';
+    this.pausePlayBtn.innerHTML = this.isPaused ? ICONS.play : ICONS.pause;
     if (this.isPaused) {
       if (this.progressRing) {
         const computedStyle = window.getComputedStyle(this.progressRing);
@@ -661,7 +709,7 @@ class WorkoutPlayer {
   }
 
   confirmExit() {
-    if (confirm('Прервать тренировку? Прогресс за этот заход не сохранится.')) {
+    if (confirm('Прервать тренировку? Текущий подход не будет сохранен.')) {
       clearInterval(this.timer);
       this.modal.classList.remove('active');
     }
@@ -686,7 +734,7 @@ class WorkoutPlayer {
 
   triggerHaptic() {
     if (state.data.settings.vibration && navigator.vibrate) {
-      try { navigator.vibrate([100, 50, 100]); } catch (e) {}
+      try { navigator.vibrate([80, 40, 80]); } catch (e) {}
     }
   }
 }
@@ -701,18 +749,18 @@ function renderHeaderStats() {
   document.getElementById('streakCount').textContent = state.data.streak;
   document.getElementById('userXpCount').textContent = state.data.xp;
 
-  const { current, next, progressPercent } = state.getCurrentRank();
+  const { current, progressPercent } = state.getCurrentRank();
   document.getElementById('userRankTitle').textContent = current.title;
   document.getElementById('userLevelNum').textContent = `Ур. ${current.level}`;
   document.getElementById('levelProgressFill').style.width = `${progressPercent}%`;
 
   // Update dynamic greeting based on hour
   const hour = new Date().getHours();
-  let greet = 'Доброе утро';
-  if (hour >= 12 && hour < 18) greet = 'Добрый день';
-  else if (hour >= 18 && hour < 23) greet = 'Добрый вечер';
-  else if (hour >= 23 || hour < 5) greet = 'Ночной атлет';
-  document.getElementById('greetingTitle').textContent = `${greet}!`;
+  let greet = 'Утренняя сессия';
+  if (hour >= 12 && hour < 18) greet = 'Дневная сессия';
+  else if (hour >= 18 && hour < 23) greet = 'Вечерняя сессия';
+  else if (hour >= 23 || hour < 5) greet = 'Ночной тренинг';
+  document.getElementById('greetingTitle').textContent = greet;
 }
 
 function renderWorkoutsList() {
@@ -720,24 +768,31 @@ function renderWorkoutsList() {
   container.innerHTML = '';
 
   WORKOUTS.forEach(w => {
-    // Skip streak saver from standard list as it has its own dedicated card
-    if (w.id === 'streak_saver') return;
+    if (w.id === 'streak_saver') return; // Dedicated card
 
+    const iconSvg = ICONS[w.iconType] || ICONS.arms;
     const card = document.createElement('div');
     card.className = 'workout-card';
     card.innerHTML = `
-      <div class="workout-icon-box ${w.badgeClass}">${w.icon}</div>
+      <div class="workout-icon-box ${w.badgeClass}">
+        ${iconSvg}
+      </div>
       <div class="workout-info">
         <div class="workout-title-row">
           <span class="workout-title">${w.title}</span>
-          <span class="workout-duration">⏱ ${w.timeMin} мин</span>
+          <span class="workout-duration">
+            ${ICONS.clock}
+            ${w.timeMin} мин
+          </span>
         </div>
         <p class="workout-desc">${w.desc}</p>
         <div class="workout-tags">
           ${w.tags.map(t => `<span class="w-tag">${t}</span>`).join('')}
         </div>
       </div>
-      <div class="workout-arrow">›</div>
+      <div class="workout-arrow">
+        ${ICONS.chevronRight}
+      </div>
     `;
     card.addEventListener('click', () => player.start(w));
     container.appendChild(card);
@@ -750,7 +805,7 @@ function renderProgressScreen() {
   document.getElementById('totalPushupsCount').textContent = state.data.totalPushups;
 
   const { current } = state.getCurrentRank();
-  document.getElementById('cardRankBadge').textContent = `${current.icon} ${current.title}`;
+  document.getElementById('cardRankBadge').textContent = current.title;
 
   // Milestones list
   const milestonesContainer = document.getElementById('rankMilestonesList');
@@ -760,10 +815,15 @@ function renderProgressScreen() {
     const item = document.createElement('div');
     item.className = `rank-item ${isUnlocked ? 'unlocked' : ''}`;
     item.innerHTML = `
-      <span class="rank-icon">${r.icon}</span>
-      <div style="flex:1;">
-        <div class="rank-title">${r.title} ${isUnlocked ? '✔' : ''}</div>
-        <div class="rank-requirement">${r.xpReq === 0 ? 'Начальный ранг' : `Требуется ${r.xpReq} XP`}</div>
+      <div class="rank-item-icon">
+        ${isUnlocked ? ICONS.check : ICONS.medal}
+      </div>
+      <div class="rank-item-info">
+        <div class="rank-title-row">
+          <span class="rank-title">${r.title}</span>
+          <span class="rank-status-tag">${isUnlocked ? 'Достигнут' : 'В процессе'}</span>
+        </div>
+        <div class="rank-requirement">${r.xpReq === 0 ? 'Начальная ступень' : `Требуется ${r.xpReq} XP`}</div>
       </div>
     `;
     milestonesContainer.appendChild(item);
@@ -787,11 +847,9 @@ function renderCalendar() {
   grid.innerHTML = '';
 
   const firstDayIndex = new Date(year, month, 1).getDay(); // 0 is Sun
-  // Convert to Mon=0, Sun=6
   const startOffset = (firstDayIndex + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  // Empty leading days
   for (let i = 0; i < startOffset; i++) {
     const emptyCell = document.createElement('div');
     emptyCell.className = 'cal-day empty';
@@ -826,13 +884,18 @@ function renderExerciseGuide(filter = 'all') {
 
     const item = document.createElement('div');
     item.className = 'exercise-guide-item';
+    const visual = EXERCISE_VISUALS[ex.id] || ICONS.arms;
     item.innerHTML = `
-      <div class="guide-icon">${ex.icon}</div>
+      <div class="guide-icon">
+        ${visual}
+      </div>
       <div class="guide-details">
         <div class="guide-name">${ex.name}</div>
         <div class="guide-target">${ex.muscles}</div>
       </div>
-      <div style="color: var(--text-muted); font-size: 18px;">ℹ️</div>
+      <div class="guide-action">
+        ${ICONS.chevronRight}
+      </div>
     `;
     item.addEventListener('click', () => showExerciseDetailModal(ex));
     container.appendChild(item);
@@ -841,7 +904,7 @@ function renderExerciseGuide(filter = 'all') {
 
 function showExerciseDetailModal(ex) {
   document.getElementById('infoModalTitle').textContent = ex.name;
-  document.getElementById('infoModalIcon').textContent = ex.icon;
+  document.getElementById('infoModalIcon').innerHTML = EXERCISE_VISUALS[ex.id] || ICONS.arms;
   document.getElementById('infoModalMuscles').textContent = ex.muscles;
   document.getElementById('infoModalInstructions').textContent = ex.tip;
   document.getElementById('infoModalProTip').textContent = ex.proTip;
@@ -851,11 +914,11 @@ function showExerciseDetailModal(ex) {
 function showFinishModal(workout, elapsedSeconds, result) {
   const modal = document.getElementById('finishModal');
   document.getElementById('rewardXp').textContent = `+${result.xpGained} XP`;
-  document.getElementById('rewardStreak').textContent = `Серия: ${result.streak} 🔥`;
+  document.getElementById('rewardStreak').textContent = `Серия: ${result.streak} дн`;
 
   const m = Math.floor(elapsedSeconds / 60);
   const s = elapsedSeconds % 60;
-  document.getElementById('finishDuration').textContent = `${m}:${String(s).padStart(2, '0')}`;
+  document.getElementById('finishDuration').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 
   const estimatedKcal = Math.round((elapsedSeconds / 60) * 8.5);
   document.getElementById('finishCalories').textContent = `~${estimatedKcal} ккал`;
@@ -893,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Hero Quick Start (Launches Morning or Iron Abs)
+  // Hero Quick Start
   document.getElementById('heroQuickStartBtn').addEventListener('click', () => {
     const quickWorkout = WORKOUTS.find(w => w.id === 'morning_kick') || WORKOUTS[0];
     player.start(quickWorkout);
@@ -952,11 +1015,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset progress data
   document.getElementById('btnResetData').addEventListener('click', () => {
-    if (confirm('Сбросить весь прогресс, опыт и историю тренировок?')) {
+    if (confirm('Сбросить данные журнала, опыт и историю сессий?')) {
       state.resetAll();
       renderHeaderStats();
       renderProgressScreen();
-      alert('Прогресс сброшен к началу!');
+      alert('Данные прогресса очищены.');
     }
   });
 
